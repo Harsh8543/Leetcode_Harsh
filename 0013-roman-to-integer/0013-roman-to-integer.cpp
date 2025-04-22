@@ -1,20 +1,28 @@
 class Solution {
 public:
-    int num(char c) {
-    if(c=='I') return 1; if(c=='V') return 5; if(c=='X') return 10;
-    if(c=='L') return 50; if(c=='C') return 100; if(c=='D') return 500;
-    return 1000;
-}
     int romanToInt(string s) {
-        int sum=0, index=0;
-        while(index<s.size()-1){
-            if(num(s[index])<num(s[index+1]))
-            sum-=num(s[index]);
-            else 
-            sum+=num(s[index]);
-            index++;
-        }
-        sum+=num(s[index]);
-        return sum;
+  map<char,int>m;
+         m.insert({'I',1});
+         m.insert({'V',5});  
+         m.insert({'X',10});
+         m.insert({'L',50});
+         m.insert({'C',100});
+         m.insert({'D',500});
+         m.insert({'M',1000});
+int ans=0;
+for(int i=0;i<s.size();i++){
+    if(i==s.size()-1){
+        ans+=m[s[i]];
     }
+    else if(m[s[i]]>=m[s[i+1]]){
+        ans+=m[s[i]];
+    }
+    else{
+        ans-=m[s[i]];
+    }
+}
+return ans;
+
+    }
+     
 };
