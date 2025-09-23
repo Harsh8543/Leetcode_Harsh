@@ -1,3 +1,57 @@
+class Solution {
+    int lis(vector<int>& nums,int n,int i,int j,vector<vector<int>>& dp) {
+        if(j==n) {
+            return 1; 
+        }
+        if (dp[i][j]!=-1) {
+            return dp[i][j];
+        }
+        int taken=0;
+        if (nums[i]<nums[j]) {
+            taken = 1+lis(nums, n,j,j+1,dp);
+        }
+        int ntaken=lis(nums, n, i, j + 1, dp);
+        return dp[i][j]=max(taken, ntaken);
+    }
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        if (n == 0) return 0;
+        vector<int> har;
+        int cnt = 1;     
+        int result = 0;
+        vector<vector<int>> dp(n, vector<int>(n + 1, -1));
+        for (int start = 0; start < n; start++) {
+            result = max(result, lis(nums, n, start, start + 1, dp));
+        }
+        return result;
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // class Solution {
 //     int lis(vector<int>& nums,int n,vector<int>&har,int &cnt,int i,int j){
 //       if(j==n){
@@ -59,33 +113,3 @@
 
 
 
-
-class Solution {
-    int lis(vector<int>& nums, int n, int i, int j, vector<vector<int>>& dp) {
-        if (j == n) {
-            return 1; 
-        }
-        if (dp[i][j] != -1) {
-            return dp[i][j];
-        }
-        int taken = 0;
-        if (nums[i] < nums[j]) {
-            taken = 1 + lis(nums, n, j, j + 1, dp);
-        }
-        int not_taken = lis(nums, n, i, j + 1, dp);
-        return dp[i][j] = max(taken, not_taken);
-    }
-public:
-    int lengthOfLIS(vector<int>& nums) {
-        int n = nums.size();
-        if (n == 0) return 0;
-        vector<int> har;
-        int cnt = 1;     
-        int result = 0;
-        vector<vector<int>> dp(n, vector<int>(n + 1, -1));
-        for (int start = 0; start < n; start++) {
-            result = max(result, lis(nums, n, start, start + 1, dp));
-        }
-        return result;
-    }
-};
