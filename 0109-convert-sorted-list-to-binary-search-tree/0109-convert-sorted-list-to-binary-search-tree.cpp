@@ -22,30 +22,23 @@
 class Solution {
 public:
     TreeNode* sortedListToBST(ListNode* head) {
-        if (!head) return NULL; // Base case: if list is empty, return NULL
-        if (!head->next) return new TreeNode(head->val); // Single node case
-
-        ListNode* slow = head;
-        ListNode* fast = head;
-        ListNode* prev = NULL;
-
-        // Find the middle node (slow) using fast and slow pointers
-        while (fast && fast->next) {
-            prev = slow;
-            slow = slow->next;
-            fast = fast->next->next;
+        vector<int> nums;
+        while (head) {
+            nums.push_back(head->val);
+            head = head->next;
         }
+        return buildBST(nums, 0, nums.size() - 1);
+    }
+        private:
+    TreeNode* buildBST(vector<int>& nums, int left, int right) {
+        if (left > right) return nullptr;
 
-        // Disconnect the left half from the middle
-        if (prev) prev->next = NULL;
+        int mid = left + (right - left) / 2;
+        TreeNode* root = new TreeNode(nums[mid]);
 
-        // Create the root node with the middle element
-        TreeNode* root = new TreeNode(slow->val);
+        root->left = buildBST(nums, left, mid - 1);
+        root->right = buildBST(nums, mid + 1, right);
 
-        // Recursively construct the left and right subtrees
-        if (head != slow) root->left = sortedListToBST(head); // Left subtree
-        root->right = sortedListToBST(slow->next); // Right subtree
-
-        return root;    
+        return root;
     }
 };
